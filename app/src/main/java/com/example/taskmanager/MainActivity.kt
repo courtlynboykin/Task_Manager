@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,12 +33,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TaskMessage(
-                        heading = stringResource(R.string.tasks_completed),
-                        message = stringResource(
-                            R.string.nice_work
-                        )
-                    )
+                    TaskMessageApp()
                 }
             }
         }
@@ -45,10 +41,35 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TaskMessage(heading: String, message: String, modifier: Modifier = Modifier) {
+fun TaskMessageApp() {
+    MessageCard(
+        heading = stringResource(R.string.tasks_completed),
+        message = stringResource(R.string.nice_work),
+        image = painterResource(R.drawable.ic_task_completed)
+    )
+}
+
+@Composable
+fun MessageCard(
+    heading: String,
+    message: String,
+    image: Painter,
+    modifier: Modifier = Modifier
+) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(
+                horizontal = 100.dp,
+                vertical = 200.dp
+            )
     ) {
+        Image(
+            painter = image,
+            contentDescription = null,
+            modifier = Modifier
+        )
         Text(
             text = heading,
             fontWeight = FontWeight.Bold,
@@ -65,37 +86,10 @@ fun TaskMessage(heading: String, message: String, modifier: Modifier = Modifier)
     }
 }
 
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun TaskImage(heading: String, message: String, modifier: Modifier = Modifier) {
-    val image = painterResource(R.drawable.ic_task_completed)
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .padding(
-                horizontal = 100.dp,
-                vertical = 200.dp
-            )
-    ) {
-        Image(
-            painter = image,
-            contentDescription = null,
-            modifier = Modifier
-        )
-        TaskMessage(
-            heading = heading,
-            message = message
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
+fun TaskManagerPreview() {
     TaskManagerTheme {
-        TaskImage(
-            stringResource(R.string.tasks_completed),
-            stringResource(R.string.nice_work)
-        )
+        TaskMessageApp()
     }
 }
